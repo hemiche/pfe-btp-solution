@@ -1,0 +1,50 @@
+{
+  "name": "pfe-btp-solution",
+  "version": "1.0.0",
+  "description": "Solution Cloud de Gestion des Clients et des Fournisseurs pour les Startups et PME",
+  "repository": "<repo>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^7",
+    "express": "^4",
+    "@sap/xssec": "^3",
+    "@sap/xsenv": "^4",
+    "passport": "^0.7.0",
+    "hdb": "^0.19.0"
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^7",
+    "sqlite3": "^5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "build": "mbt build",
+    "deploy": "cf deploy mta_archives/pfe-btp-solution_1.0.0.mtar"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sql"
+      },
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "alice": {
+            "roles": [
+              "Admin",
+              "authenticated-user"
+            ]
+          },
+          "bob": {
+            "roles": [
+              "User",
+              "authenticated-user"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

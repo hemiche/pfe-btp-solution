@@ -1,0 +1,41 @@
+### Tests AdminService
+GET http://localhost:4004/odata/v4/admin/BusinessPartners
+Authorization: Basic alice:
+
+### Tests CRMService - Créer un Devis
+# @name createQuote
+POST http://localhost:4004/odata/v4/crm/Quotes
+Authorization: Basic alice:
+Content-Type: application/json
+
+{
+    "client_ID": "10000001",
+    "quoteDate": "2026-05-13",
+    "totalAmount": 150000.00,
+    "currency_code": "DZD",
+    "items": [
+        { "product_ID": "P001", "quantity": 1, "price": 150000.00 }
+    ]
+}
+
+### Convertir Devis en Commande (Action)
+POST http://localhost:4004/odata/v4/crm/Quotes(ID=...,IsActiveEntity=true)/CRMService.convertToOrder
+Authorization: Basic alice:
+Content-Type: application/json
+
+{}
+
+### Tests SRMService - Créer une RFQ
+POST http://localhost:4004/odata/v4/srm/RFQs
+Authorization: Basic alice:
+Content-Type: application/json
+
+{
+    "supplier_ID": "10000002",
+    "rfqDate": "2026-05-13",
+    "totalAmount": 25000.00,
+    "currency_code": "DZD",
+    "items": [
+        { "product_ID": "P002", "quantity": 1, "price": 25000.00 }
+    ]
+}

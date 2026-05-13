@@ -1,0 +1,4 @@
+ID,name,description,category,price,currency_code,stockLevel
+P001,Laptop Pro,High performance laptop,Electronics,150000.00,DZD,50
+P002,Office Chair,Ergonomic chair,Furniture,25000.00,DZD,100
+P003,Monitor 27",4K UHD Monitor,Electronics,45000.00,DZD,30

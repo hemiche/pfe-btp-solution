@@ -1,0 +1,4 @@
+ID,firstName,lastName,companyName,email,bpRole,isB2B,taxID
+10000001,Ahmed,Brahimi,TechStart DZ,contact@techstart.dz,Client,true,123456789
+10000002,Kamel,Mansouri,Batiment Pro,kamel@batipro.dz,Supplier,true,987654321
+10000003,Sarah,Djazairi,Logistique Plus,sarah@logplus.dz,Both,true,456123789

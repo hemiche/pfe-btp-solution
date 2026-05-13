@@ -1,0 +1,42 @@
+_schema-version: "3.1"
+ID: pfe-btp-solution
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: pfe-btp-solution-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: pfe-btp-solution-db
+      - name: pfe-btp-solution-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+  - name: pfe-btp-solution-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: pfe-btp-solution-db
+    parameters:
+      buildpack: nodejs_buildpack
+
+resources:
+  - name: pfe-btp-solution-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: pfe-btp-solution-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+    build-parameters:
+      requires:
+        - name: pfe-btp-solution-srv

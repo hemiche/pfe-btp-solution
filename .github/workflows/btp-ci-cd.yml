@@ -1,0 +1,38 @@
+name: SAP BTP CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Cloud MTA Build Tool (MBT)
+        run: npm install -g mbt
+
+      - name: Install Dependencies
+        run: |
+          cd pfe-btp-solution
+          npm install
+
+      - name: Build MTA Archive
+        run: |
+          cd pfe-btp-solution
+          mbt build -t gen --mtar pfe-btp-solution.mtar
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mtar-archive
+          path: pfe-btp-solution/gen/pfe-btp-solution.mtar
