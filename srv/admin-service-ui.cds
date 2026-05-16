@@ -52,6 +52,7 @@ annotate AdminService.BusinessPartners with @(
             Data: [
                 { Value: companyName, Label: 'Entreprise' },
                 { Value: secteurActivite, Label: 'Secteur d''activité' },
+                { Value: fullNameResponsible, Label: 'Responsable' },
                 { Value: rib, Label: 'RIB' },
                 { Value: nif, Label: 'NIF' },
                 { Value: ai, Label: 'Article d''Imposition AI (11 chiffres)' },

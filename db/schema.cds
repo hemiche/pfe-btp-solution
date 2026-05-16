@@ -26,6 +26,7 @@ aspect AuditFields : managed {
 entity BusinessPartners : cuid, AuditFields {
     firstName      : String(100);
     lastName       : String(100);
+    fullNameResponsible : String(200);
     companyName    : String(200);
     email          : String(255);
     password       : String(255); // Hash ou mot de passe en clair pour le PFE

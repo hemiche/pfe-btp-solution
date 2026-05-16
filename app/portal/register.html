@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .sap-container { max-width: 600px; }
+        .password-container { position: relative; display: flex; align-items: center; }
+        .password-container input { padding-right: 40px; width: 100%; }
+        .password-toggle { 
+            position: absolute; 
+            right: 10px; 
+            cursor: pointer; 
+            color: #666; 
+            font-size: 1.2rem;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -65,7 +75,7 @@
 
             <!-- PHASE 2: Identifiants -->
             <div class="wizard-step" id="step2">
-                <h3 style="margin-top:0;">Identifiants de connexion</h3>
+                <h3 style="margin-top:0;">Identifiants & Responsable</h3>
                 <div class="sap-form-group">
                     <label class="sap-label" for="bpRole">Vous êtes un... *</label>
                     <select id="bpRole" class="sap-input" required>
@@ -74,12 +84,30 @@
                     </select>
                 </div>
                 <div class="sap-form-group">
+                    <label class="sap-label" for="fullNameResponsible">Nom complet du responsable *</label>
+                    <input type="text" id="fullNameResponsible" class="sap-input" placeholder="Ex: Mohamed Hemiche" required>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="phoneNumber">Numéro de téléphone *</label>
+                    <input type="tel" id="phoneNumber" class="sap-input" placeholder="Ex: 0550123456" required>
+                </div>
+                <div class="sap-form-group">
                     <label class="sap-label" for="email">Adresse E-mail *</label>
-                    <input type="email" id="email" class="sap-input" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|dz|fr|net|org)$" title="Veuillez entrer une adresse e-mail valide (ex: .com, .dz, .fr)" required>
+                    <input type="email" id="email" class="sap-input" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|dz|fr|net|org)$" title="Veuillez entrer une adresse e-mail valide" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="password">Mot de passe *</label>
-                    <input type="password" id="password" class="sap-input" minlength="6" required>
+                    <div class="password-container">
+                        <input type="password" id="password" class="sap-input" minlength="6" required>
+                        <span class="password-toggle" onclick="togglePassword('password')">👁️</span>
+                    </div>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="confirmPassword">Confirmer le mot de passe *</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmPassword" class="sap-input" minlength="6" required>
+                        <span class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</span>
+                    </div>
                 </div>
                 <div class="wizard-nav">
                     <button type="button" class="sap-btn sap-btn-secondary" onclick="prevStep(1)">Précédent</button>
