@@ -1,0 +1,2 @@
+ID,orderNumber,quote_ID,client_ID,orderDate,totalAmount,currency_code,status
+SO1,SO-2026-001,Q1,10000001,2026-05-10,195000.00,DZD,Pending

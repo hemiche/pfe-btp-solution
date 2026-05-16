@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard PFE - Solution BTP Cloud</title>
+    <style>
+        :root {
+            --primary: #0a6ed1;
+            --secondary: #f39c12;
+            --dark: #1a1a2e;
+            --light: #f4f7f6;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            padding: 2rem;
+            text-align: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            padding: 2rem;
+        }
+
+        .welcome-card {
+            background: var(--glass);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .tile {
+            background: var(--glass);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .tile:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .tile i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .tile h3 {
+            margin: 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .tile p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .badge {
+            background: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        .status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 10px #2ecc71;
+        }
+
+        .btn-main {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+
+        .btn-main:hover {
+            background: #085bb0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PFE SAP BTP - Construction Cloud Solution</h1>
+        <p><span class="status-dot"></span> Serveur Backend : <strong>Actif (Port 4005)</strong></p>
+    </header>
+
+    <div class="container">
+        <div class="welcome-card">
+            <h2>Bienvenue dans votre Solution de Gestion BTP</h2>
+            <p>Votre plateforme est prête. Toutes les automatisations de stock, les processus CRM et SRM sont configurés et testés.</p>
+            <a href="http://localhost:4005" target="_blank" class="btn-main">Accéder au Portail SAP Fiori</a>
+        </div>
+
+        <div class="grid">
+            <a href="http://localhost:4005/odata/v4/admin/$metadata" target="_blank" class="tile">
+                <i>👤</i>
+                <h3>Administration</h3>
+                <p>Gestion des Partenaires et des Produits du catalogue.</p>
+                <span class="badge">Module CORE</span>
+            </a>
+
+            <a href="http://localhost:4005/odata/v4/crm/$metadata" target="_blank" class="tile">
+                <i>📈</i>
+                <h3>CRM & Ventes</h3>
+                <p>Devis, Commandes et Facturation Clients avec validation de stock.</p>
+                <span class="badge">Module CRM</span>
+            </a>
+
+            <a href="http://localhost:4005/odata/v4/srm/$metadata" target="_blank" class="tile">
+                <i>🚚</i>
+                <h3>SRM & Achats</h3>
+                <p>RFQs, POs et Réception de Marchandises (Incrémentation de stock).</p>
+                <span class="badge">Module SRM</span>
+            </a>
+
+            <a href="http://localhost:4005/odata/v4/analytics/$metadata" target="_blank" class="tile">
+                <i>📊</i>
+                <h3>Analytics</h3>
+                <p>Tableaux de bord, KPIs et rapports de performance.</p>
+                <span class="badge">Module Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        Projet de Fin d'Études - Solution Cloud SAP BTP - 2026
+    </div>
+
+</body>
+</html>

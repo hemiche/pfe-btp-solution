@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(async function() {
-    const { RFQs, PurchaseOrders, Invoices } = this.entities;
+    const { RFQs, PurchaseOrders, Invoices, GoodsReceipts, Products } = this.entities;
 
     // 1. Generation des numéros de RFQ
     this.before('CREATE', 'RFQs', async (req) => {
@@ -67,5 +67,25 @@ module.exports = cds.service.impl(async function() {
         });
 
         return invoice;
+    });
+    
+    // 5. Réception de marchandises : Augmenter le stock
+    this.before('CREATE', 'GoodsReceipts', async (req) => {
+        const { maxID } = await SELECT.one`max(receiptNumber) as maxID`.from(GoodsReceipts);
+        req.data.receiptNumber = `GR-${(parseInt(maxID?.split('-')[1] || 0) + 1).toString().padStart(6, '0')}`;
+    });
+
+    this.after('CREATE', 'GoodsReceipts', async (data) => {
+        const po = await SELECT.one.from(PurchaseOrders, data.purchaseOrder_ID).columns( p => {
+            p.items( i => { i.product_ID, i.quantity })
+        });
+
+        if (po && po.items) {
+            for (const item of po.items) {
+                await UPDATE(Products, item.product_ID).with({
+                    stockLevel: { '+': item.quantity }
+                });
+            }
+        }
     });
 });

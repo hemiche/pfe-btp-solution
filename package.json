@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^7",
+    "@sap/cds": "^8",
     "express": "^4",
     "@sap/xssec": "^3",
     "@sap/xsenv": "^4",
@@ -31,6 +31,13 @@
       "auth": {
         "kind": "mocked",
         "users": {
+          "admin@pfe.dz": {
+            "password": "admin",
+            "roles": [
+              "Admin",
+              "authenticated-user"
+            ]
+          },
           "alice": {
             "roles": [
               "Admin",

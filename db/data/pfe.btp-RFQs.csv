@@ -1,0 +1,2 @@
+ID,rfqNumber,supplier_ID,rfqDate,totalAmount,currency_code,status
+R1,RFQ-2026-001,10000002,2026-05-02,250000.00,DZD,Approved

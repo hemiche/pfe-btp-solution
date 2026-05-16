@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - SAP Fiori Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .sap-container { max-width: 600px; }
+    </style>
+</head>
+<body>
+    <div class="sap-container">
+        <div class="sap-logo">
+            <img src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" alt="SAP Logo" style="width: 80px; margin-bottom: 10px;">
+            <br>SAP BTP
+        </div>
+        <div class="sap-title">Demande de Partenariat</div>
+
+        <div class="wizard-progress">
+            <div class="wizard-dot active" id="dot1">1</div>
+            <div class="wizard-dot" id="dot2">2</div>
+            <div class="wizard-dot" id="dot3">3</div>
+        </div>
+
+        <div id="registerMessage" class="sap-message"></div>
+
+        <form id="registerForm">
+            <!-- PHASE 1: Infos Société -->
+            <div class="wizard-step active" id="step1">
+                <h3 style="margin-top:0;">Informations de l'entreprise</h3>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="companyName">Nom de la société *</label>
+                    <input type="text" id="companyName" class="sap-input" placeholder="Ex: TechStart DZ" required>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="secteurActivite">Secteur d'activité *</label>
+                    <input list="secteurs" id="secteurActivite" class="sap-input" placeholder="Sélectionnez ou tapez..." required>
+                    <datalist id="secteurs">
+                        <option value="BTP / Construction">
+                        <option value="Informatique / IT">
+                        <option value="Logistique / Transport">
+                        <option value="Commerce de gros">
+                        <option value="Industrie">
+                        <option value="Services">
+                    </datalist>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="rib">RIB (20 chiffres) *</label>
+                    <input type="text" id="rib" class="sap-input" maxlength="20" minlength="20" pattern="\d{20}" title="Veuillez saisir exactement 20 chiffres" placeholder="Ex: 00100200300400500600" required>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="nif">NIF (15 chiffres) *</label>
+                    <input type="text" id="nif" class="sap-input" maxlength="15" minlength="15" pattern="\d{15}" title="Veuillez saisir exactement 15 chiffres" placeholder="Ex: 123456789012345" required>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="ai">Article d'Imposition AI (11 chiffres) *</label>
+                    <input type="text" id="ai" class="sap-input" maxlength="11" minlength="11" pattern="\d{11}" title="Veuillez saisir exactement 11 chiffres" placeholder="Ex: 12345678901" required>
+                </div>
+                <div class="wizard-nav">
+                    <button type="button" class="sap-btn sap-btn-secondary" onclick="window.location.href='index.html'">Annuler</button>
+                    <button type="button" class="sap-btn" onclick="nextStep(2)">Suivant</button>
+                </div>
+            </div>
+
+            <!-- PHASE 2: Identifiants -->
+            <div class="wizard-step" id="step2">
+                <h3 style="margin-top:0;">Identifiants de connexion</h3>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="bpRole">Vous êtes un... *</label>
+                    <select id="bpRole" class="sap-input" required>
+                        <option value="Client">Client (Acheteur de nos produits)</option>
+                        <option value="Supplier">Fournisseur (Vendeur de vos produits)</option>
+                    </select>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="email">Adresse E-mail *</label>
+                    <input type="email" id="email" class="sap-input" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|dz|fr|net|org)$" title="Veuillez entrer une adresse e-mail valide (ex: .com, .dz, .fr)" required>
+                </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="password">Mot de passe *</label>
+                    <input type="password" id="password" class="sap-input" minlength="6" required>
+                </div>
+                <div class="wizard-nav">
+                    <button type="button" class="sap-btn sap-btn-secondary" onclick="prevStep(1)">Précédent</button>
+                    <button type="button" class="sap-btn" onclick="nextStep(3)">Suivant</button>
+                </div>
+            </div>
+
+            <!-- PHASE 3: Documents -->
+            <div class="wizard-step" id="step3">
+                <h3 style="margin-top:0;">Justificatifs (Format PDF uniquement)</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;">
+                    Veuillez télécharger vos documents officiels. Ces fichiers seront vérifiés par l'administrateur.
+                </p>
+
+                <div class="sap-form-group file-upload-section">
+                    <label class="sap-label"><span class="icon">🏦</span> Relevé d'Identité Bancaire (RIB) *</label>
+                    <input type="file" id="fileRIB" class="sap-input" accept=".pdf" required>
+                </div>
+
+                <div class="sap-form-group file-upload-section">
+                    <label class="sap-label"><span class="icon">📄</span> Numéro d'Identification Fiscale (NIF) *</label>
+                    <input type="file" id="fileNIF" class="sap-input" accept=".pdf" required>
+                </div>
+
+                <div class="sap-form-group file-upload-section">
+                    <label class="sap-label"><span class="icon">⚖️</span> Article d'Imposition (AI) *</label>
+                    <input type="file" id="fileAI" class="sap-input" accept=".pdf" required>
+                </div>
+
+                <div class="wizard-nav">
+                    <button type="button" class="sap-btn sap-btn-secondary" onclick="prevStep(2)">Précédent</button>
+                    <button type="submit" class="sap-btn">Soumettre la demande</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

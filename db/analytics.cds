@@ -12,7 +12,7 @@ define view SalesAnalytics as select from my.SalesOrders {
     client.companyName as clientName,
     @Aggregation.default: #SUM
     totalAmount,
-    currency_code as currency
+    currency.code as currency
 };
 
 /**
@@ -25,7 +25,7 @@ define view PurchaseAnalytics as select from my.PurchaseOrders {
     supplier.companyName as supplierName,
     @Aggregation.default: #SUM
     totalAmount,
-    currency_code as currency
+    currency.code as currency
 };
 
 /**

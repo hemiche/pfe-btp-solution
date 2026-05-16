@@ -37,6 +37,3 @@ resources:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
-    build-parameters:
-      requires:
-        - name: pfe-btp-solution-srv

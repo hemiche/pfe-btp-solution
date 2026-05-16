@@ -1,0 +1,2 @@
+ID,poNumber,rfq_ID,supplier_ID,poDate,totalAmount,currency_code,status
+PO1,PO-2026-001,R1,10000002,2026-05-11,250000.00,DZD,Pending

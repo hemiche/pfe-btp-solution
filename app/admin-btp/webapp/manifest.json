@@ -43,16 +43,27 @@
       }
     },
     "routing": {
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "viewType": "XML",
+        "controlAggregation": "mainContents",
+        "async": true
+      },
       "routes": [
         {
           "pattern": ":?query:",
           "name": "BusinessPartnersList",
-          "target": "BusinessPartnersList"
+          "target": [
+            "BusinessPartnersList"
+          ]
         },
         {
           "pattern": "BusinessPartners({key}):?query:",
           "name": "BusinessPartnersObjectPage",
-          "target": "BusinessPartnersObjectPage"
+          "target": [
+            "BusinessPartnersList",
+            "BusinessPartnersObjectPage"
+          ]
         }
       ],
       "targets": {
@@ -63,6 +74,7 @@
           "options": {
             "settings": {
               "entitySet": "BusinessPartners",
+              "variantManagement": "None",
               "navigation": {
                 "BusinessPartners": {
                   "detail": {

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail d'Administration Centralisé</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "72", "Segoe UI", Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f4f4f4;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background-color: #1a1a2e;
+            color: #d1d1e0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background-color: #0a6ed1; /* SAP Blue */
+            text-align: center;
+        }
+        
+        .menu-title {
+            padding: 15px 20px 5px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c6c8e;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .menu-item:hover {
+            background-color: #2a2a4a;
+            color: white;
+        }
+        
+        .menu-item.active {
+            background-color: #2a2a4a;
+            border-left-color: #0a6ed1;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .icon {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR GAUCHE -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            🛡️ Admin Portal
+        </div>
+        
+        <div class="menu-title">Gestion de l'accès</div>
+        <div class="menu-item active" onclick="loadModule(this, '/$fiori-preview/AdminService/BusinessPartners#preview-app')">
+            <span class="icon">👥</span> Partenaires (Approuver)
+        </div>
+        
+        <div class="menu-title">Opérations</div>
+        <div class="menu-item" onclick="loadModule(this, '/$fiori-preview/AdminService/Products#preview-app')">
+            <span class="icon">📦</span> Catalogue Produits
+        </div>
+        
+        <div class="menu-title">Statistiques</div>
+        <div class="menu-item" onclick="loadModule(this, '/$fiori-preview/AnalyticsService/MonthlySales#preview-app')">
+            <span class="icon">📊</span> Analytics KPIs
+        </div>
+        
+        <div style="margin-top: auto;" class="menu-item" onclick="window.location.href='/portal/index.html'">
+            <span class="icon">🚪</span> Déconnexion
+        </div>
+    </div>
+
+    <!-- CONTENU PRINCIPAL (APP FIORI) -->
+    <div class="content">
+        <!-- Par défaut, on charge la page des Partenaires -->
+        <iframe id="moduleFrame" src="/$fiori-preview/AdminService/BusinessPartners#preview-app"></iframe>
+    </div>
+
+    <script>
+        function loadModule(element, url) {
+            // Retirer la classe active de tous les menus
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            // Ajouter la classe active au menu cliqué
+            element.classList.add('active');
+            // Changer l'URL de l'iframe
+            document.getElementById('moduleFrame').src = url;
+        }
+    </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(async function() {
-    const { Quotes, SalesOrders, Invoices } = this.entities;
+    const { Quotes, SalesOrders, Invoices, Products } = this.entities;
 
     // 1. Generation des numéros de Devis
     this.before('CREATE', 'Quotes', async (req) => {
@@ -13,6 +13,26 @@ module.exports = cds.service.impl(async function() {
     this.before('CREATE', 'SalesOrders', async (req) => {
         const { maxID } = await SELECT.one`max(orderNumber) as maxID`.from(SalesOrders);
         req.data.orderNumber = `SO-${(parseInt(maxID?.split('-')[1] || 0) + 1).toString().padStart(6, '0')}`;
+
+        // Validation des stocks
+        const items = req.data.items || [];
+        for (const item of items) {
+            const product = await SELECT.one.from(Products, item.product_ID);
+            if (!product) continue;
+            if (product.stockLevel < item.quantity) {
+                return req.error(400, `Stock insuffisant pour ${product.name} (Disponible: ${product.stockLevel})`);
+            }
+        }
+    });
+
+    // 2b. Mise à jour du stock après création de commande
+    this.after('CREATE', 'SalesOrders', async (data) => {
+        const items = data.items || [];
+        for (const item of items) {
+            await UPDATE(Products, item.product_ID).with({
+                stockLevel: { '-': item.quantity }
+            });
+        }
     });
 
     // 3. ACTION : Convertir Devis en Commande

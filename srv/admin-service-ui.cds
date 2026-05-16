@@ -1,14 +1,30 @@
 using { AdminService } from './admin-service';
 
+annotate AdminService.BusinessPartnerDocuments with {
+    content @Core.MediaType: mediaType @Core.ContentDisposition: {
+        Filename: fileName,
+        Type    : 'inline'
+    };
+};
+
+annotate AdminService.BusinessPartners with {
+    status      @Common.Text: statusText @Common.TextArrangement: #TextOnly @Common.ValueListWithFixedValues;
+    companyName @title: 'Entreprise' @Common.FilterExpressionRestrictions: [{ Property: companyName, AllowedExpressions: 'SearchExpression' }];
+    email       @title: 'Email';
+    bpRole      @title: 'Rôle' @Common.ValueListWithFixedValues;
+    statusText  @title: 'Statut';
+};
+
 annotate AdminService.BusinessPartners with @(
     UI: {
-        SelectionFields: [ companyName, bpRole ],
+        SelectionFields: [ companyName, bpRole, status ],
         LineItem: [
+            { $Type: 'UI.DataFieldForAction', Action: 'AdminService.approve', Label: 'Approuver' },
+            { $Type: 'UI.DataFieldForAction', Action: 'AdminService.rejectPartner', Label: 'Refuser' },
             { Value: companyName, Label: 'Entreprise' },
-            { Value: firstName, Label: 'Prénom' },
-            { Value: lastName, Label: 'Nom' },
             { Value: email, Label: 'Email' },
             { Value: bpRole, Label: 'Rôle' },
+            { Value: status, Label: 'Statut' },
             { Value: createdAt, Label: 'Créé le' }
         ],
         HeaderInfo: {
@@ -16,25 +32,55 @@ annotate AdminService.BusinessPartners with @(
             TypeNamePlural: 'Partenaires',
             Title: { Value: companyName }
         },
+        Identification: [
+            { $Type: 'UI.DataFieldForAction', Action: 'AdminService.approve', Label: 'Approuver' },
+            { $Type: 'UI.DataFieldForAction', Action: 'AdminService.rejectPartner', Label: 'Refuser' }
+        ],
         Facets: [
             {
                 $Type: 'UI.ReferenceFacet',
                 Label: 'Informations Générales',
                 Target: '@UI.FieldGroup#General'
+            },
+            {
+                $Type: 'UI.ReferenceFacet',
+                Label: 'Documents (PDF)',
+                Target: 'documents/@UI.LineItem'
             }
         ],
         FieldGroup #General: {
             Data: [
-                { Value: companyName },
-                { Value: firstName },
-                { Value: lastName },
-                { Value: email },
-                { Value: phoneNumber },
-                { Value: taxID }
+                { Value: companyName, Label: 'Entreprise' },
+                { Value: secteurActivite, Label: 'Secteur d''activité' },
+                { Value: rib, Label: 'RIB' },
+                { Value: nif, Label: 'NIF' },
+                { Value: ai, Label: 'Article d''Imposition AI (11 chiffres)' },
+                { Value: email, Label: 'Email' },
+                { Value: phoneNumber, Label: 'Téléphone' },
+                { Value: status, Label: 'Statut Actuel' },
+                { Value: motifRefus, Label: 'Motif de refus' }
             ]
         }
     }
 );
+
+annotate AdminService.BusinessPartnerDocuments with @(
+    UI: {
+        LineItem: [
+            { Value: fileName, Label: 'Nom du fichier' },
+            { Value: docType, Label: 'Type de document' },
+            { Value: content, Label: 'Aperçu Document' }
+        ],
+        HeaderInfo: {
+            TypeName: 'Document',
+            TypeNamePlural: 'Documents',
+            Title: { Value: fileName },
+            Description: { Value: docType }
+        }
+    }
+);
+
+
 
 annotate AdminService.Products with @(
     UI: {

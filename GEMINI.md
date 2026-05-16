@@ -16,7 +16,7 @@ Développement d’une Solution Cloud de Gestion des Clients et des Fournisseurs
 ### Phase 2 : Modélisation des Données (CDS) ✅
 - [x] Création du schéma `db/schema.cds` (BusinessPartner, CRM, SRM)
 - [x] Définition des types communs et aspects (Audit, Lifecycle)
-- [ ] Mock data pour le développement local (.csv)
+- [x] Mock data pour le développement local (.csv)
 
 ### Phase 3 : Développement Backend (SRV) ✅
 - [x] Implémentation des services OData modulaires (Admin, CRM, SRM)
@@ -27,7 +27,7 @@ Développement d’une Solution Cloud de Gestion des Clients et des Fournisseurs
 - [x] Structure des dossiers `app/` créée
 - [x] Annotations UI CDS pour Admin et CRM (List Reports, Object Pages)
 - [x] Préparation des Mock Data (.csv) pour les tests
-- [ ] Génération des fichiers manifest.json et Component.js
+- [x] Génération des fichiers manifest.json et Component.js
 
 ### Phase 5.2 : Workflows & Logic SRM ✅
 - [x] Entités `RFQs` et `GoodsReceipts` implémentées

@@ -1,41 +1,97 @@
-### Tests AdminService
-GET http://localhost:4004/odata/v4/admin/BusinessPartners
+### 1. INITIALISATION : Vérifier le stock initial de P001
+GET http://localhost:4005/odata/v4/crm/Products(ID='P001')?$select=name,stockLevel
 Authorization: Basic alice:
 
-### Tests CRMService - Créer un Devis
-# @name createQuote
-POST http://localhost:4004/odata/v4/crm/Quotes
-Authorization: Basic alice:
-Content-Type: application/json
 
-{
-    "client_ID": "10000001",
-    "quoteDate": "2026-05-13",
-    "totalAmount": 150000.00,
-    "currency_code": "DZD",
-    "items": [
-        { "product_ID": "P001", "quantity": 1, "price": 150000.00 }
-    ]
-}
+### ============================================================
+### PHASE 1 : CYCLE ACHAT (SRM) - Augmenter le stock
+### ============================================================
 
-### Convertir Devis en Commande (Action)
-POST http://localhost:4004/odata/v4/crm/Quotes(ID=...,IsActiveEntity=true)/CRMService.convertToOrder
-Authorization: Basic alice:
-Content-Type: application/json
-
-{}
-
-### Tests SRMService - Créer une RFQ
-POST http://localhost:4004/odata/v4/srm/RFQs
+### 2. Créer une Demande d'Offre (RFQ)
+# @name createRFQ
+POST http://localhost:4005/odata/v4/srm/RFQs
 Authorization: Basic alice:
 Content-Type: application/json
 
 {
     "supplier_ID": "10000002",
-    "rfqDate": "2026-05-13",
-    "totalAmount": 25000.00,
+    "rfqDate": "2026-05-14",
+    "totalAmount": 500000.00,
     "currency_code": "DZD",
     "items": [
-        { "product_ID": "P002", "quantity": 1, "price": 25000.00 }
+        { "product_ID": "P001", "quantity": 10, "price": 50000.00 }
     ]
 }
+
+### 3. Convertir RFQ en Bon de Commande (PO)
+# Remplacer l'ID par celui retourné au point 2
+POST http://localhost:4005/odata/v4/srm/RFQs(ID=d6e87f8a-9a9b-4e8a-8a8a-8a8a8a8a8a8a,IsActiveEntity=true)/SRMService.convertToPO
+Authorization: Basic alice:
+Content-Type: application/json
+
+{}
+
+### 4. Réception des Marchandises (Goods Receipt) -> C'est ici que le stock augmente
+POST http://localhost:4005/odata/v4/srm/GoodsReceipts
+Authorization: Basic alice:
+Content-Type: application/json
+
+{
+    "purchaseOrder_ID": "b7d1c6e5-4f3a-4e2a-9a9a-9a9a9a9a9a9a",
+    "deliveryDate": "2026-05-14",
+    "receivedBy": "Mouloud"
+}
+
+### 5. Vérifier que le stock de P001 a AUGMENTÉ (+10)
+GET http://localhost:4005/odata/v4/crm/Products(ID='P001')?$select=stockLevel
+Authorization: Basic alice:
+
+
+### ============================================================
+### PHASE 2 : CYCLE VENTE (CRM) - Diminuer le stock
+### ============================================================
+
+### 6. Créer un Devis Client (Quote)
+# @name createQuote
+POST http://localhost:4005/odata/v4/crm/Quotes
+Authorization: Basic alice:
+Content-Type: application/json
+
+{
+    "client_ID": "10000001",
+    "quoteDate": "2026-05-14",
+    "totalAmount": 180000.00,
+    "currency_code": "DZD",
+    "items": [
+        { "product_ID": "P001", "quantity": 2, "price": 90000.00 }
+    ]
+}
+
+### 7. Convertir Devis en Commande (Sales Order) -> C'est ici que le stock diminue
+# Remplacer l'ID par celui retourné au point 6
+POST http://localhost:4005/odata/v4/crm/Quotes(ID=c5a9b8c7-d6e5-4f3a-a1b2-c3d4e5f6a7b8,IsActiveEntity=true)/CRMService.convertToOrder
+Authorization: Basic alice:
+Content-Type: application/json
+
+{}
+
+### 8. Vérifier que le stock de P001 a DIMINUÉ (-2)
+GET http://localhost:4005/odata/v4/crm/Products(ID='P001')?$select=stockLevel
+Authorization: Basic alice:
+
+
+### 9. Générer la Facture Client
+POST http://localhost:4005/odata/v4/crm/SalesOrders(ID=f1e2d3c4-b5a6-4f7e-8d9c-0a1b2c3d4e5f,IsActiveEntity=true)/CRMService.generateInvoice
+Authorization: Basic alice:
+Content-Type: application/json
+
+{}
+
+
+### ============================================================
+### PHASE 3 : ANALYTICS
+### ============================================================
+
+### 10. Voir les KPIs de ventes
+GET http://localhost:4005/odata/v4/analytics/SalesView
+Authorization: Basic alice:

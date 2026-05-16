@@ -1,0 +1,188 @@
+:root {
+    --sapBrandColor: #0a6ed1;
+    --sapHighlightColor: #0a6ed1;
+    --sapBaseColor: #ffffff;
+    --sapBackgroundColor: #f4f4f4;
+    --sapTextColor: #32363a;
+    --sapErrorColor: #bb0000;
+    --sapWarningColor: #e9730c;
+    --sapSuccessColor: #107e3e;
+    --sapFontFamily: "72", "72full", Arial, Helvetica, sans-serif;
+    --sapBorderColor: #d9d9d9;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: var(--sapFontFamily);
+}
+
+body {
+    background-color: var(--sapBackgroundColor);
+    color: var(--sapTextColor);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.sap-container {
+    background-color: var(--sapBaseColor);
+    padding: 2.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    border-top: 4px solid var(--sapBrandColor);
+}
+
+.sap-logo {
+    color: var(--sapBrandColor);
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.sap-title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.sap-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.sap-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.sap-input, .sap-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--sapBorderColor);
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.sap-input:focus, .sap-select:focus {
+    outline: none;
+    border-color: var(--sapBrandColor);
+    box-shadow: inset 0 0 0 1px var(--sapBrandColor);
+}
+
+.sap-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--sapBrandColor);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sap-btn:hover {
+    background-color: #0854a1;
+}
+
+.sap-btn-secondary {
+    background-color: transparent;
+    color: var(--sapBrandColor);
+    border: 1px solid var(--sapBrandColor);
+    margin-top: 1rem;
+}
+
+.sap-btn-secondary:hover {
+    background-color: #f0f7ff;
+}
+
+.sap-message {
+    padding: 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    display: none;
+    font-size: 0.9rem;
+}
+
+.sap-message.error {
+    display: block;
+    background-color: #ffebee;
+    color: var(--sapErrorColor);
+    border-left: 4px solid var(--sapErrorColor);
+}
+
+.sap-message.warning {
+    display: block;
+    background-color: #fff3e0;
+    color: var(--sapWarningColor);
+    border-left: 4px solid var(--sapWarningColor);
+}
+
+.sap-message.success {
+    display: block;
+    background-color: #e8f5e9;
+    color: var(--sapSuccessColor);
+    border-left: 4px solid var(--sapSuccessColor);
+}
+
+/* Wizard Styles */
+.wizard-step {
+    display: none;
+}
+.wizard-step.active {
+    display: block;
+}
+.wizard-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+}
+.wizard-progress::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--sapBorderColor);
+    z-index: 1;
+}
+.wizard-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--sapBaseColor);
+    border: 2px solid var(--sapBorderColor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    font-weight: bold;
+    color: #999;
+}
+.wizard-dot.active {
+    border-color: var(--sapBrandColor);
+    background: var(--sapBrandColor);
+    color: white;
+}
+.wizard-dot.completed {
+    border-color: var(--sapSuccessColor);
+    background: var(--sapSuccessColor);
+    color: white;
+}
+.wizard-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}

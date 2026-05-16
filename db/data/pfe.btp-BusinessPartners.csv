@@ -1,4 +1,5 @@
-ID,firstName,lastName,companyName,email,bpRole,isB2B,taxID
-10000001,Ahmed,Brahimi,TechStart DZ,contact@techstart.dz,Client,true,123456789
-10000002,Kamel,Mansouri,Batiment Pro,kamel@batipro.dz,Supplier,true,987654321
-10000003,Sarah,Djazairi,Logistique Plus,sarah@logplus.dz,Both,true,456123789
+ID,firstName,lastName,companyName,email,password,secteurActivite,rib,nif,ai,motifRefus,bpRole,isB2B,taxID,status,statusText
+e73c8868-3d14-4632-9c3a-866417764001,Ahmed,Brahimi,TechStart DZ,contact@techstart.dz,pass123,Informatique,00100200300400500600,123456789012345,987654321012345,,Client,true,123456789,Approved,Approuvé
+e73c8868-3d14-4632-9c3a-866417764002,Kamel,Mansouri,Batiment Pro,kamel@batipro.dz,pass123,BTP,00200300400500600700,987654321012345,123456789012345,,Supplier,true,987654321,Approved,Approuvé
+e73c8868-3d14-4632-9c3a-866417764003,Sarah,Djazairi,Logistique Plus,sarah@logplus.dz,pass123,Logistique,00300400500600700800,456123789012345,456123789012345,,Both,true,456123789,Approved,Approuvé
+f2a7a40b-4d5a-4e8b-9e5c-0c8a3f8a4b2a,Mohamed,Hemiche,SARL HEMICHE,hemiche@gmail.com,123456,Construction,12345678901234567890,123456789012345,12345678901,,Client,true,789456123,Pending,En attente d'approbation

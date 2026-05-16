@@ -17,7 +17,7 @@ type Status : String enum {
 }
 
 aspect AuditFields : managed {
-    virtual statusText : String; // For UI display
+    statusText : String; // For UI display
 }
 
 /**
@@ -28,6 +28,12 @@ entity BusinessPartners : cuid, AuditFields {
     lastName       : String(100);
     companyName    : String(200);
     email          : String(255);
+    password       : String(255); // Hash ou mot de passe en clair pour le PFE
+    secteurActivite: String(100);
+    rib            : String(20);
+    nif            : String(15);
+    ai             : String(20);
+    motifRefus     : String(500);
     phoneNumber    : String(20);
     bpRole         : String enum {
         Client;
@@ -36,7 +42,19 @@ entity BusinessPartners : cuid, AuditFields {
     };
     isB2B          : Boolean default true;
     taxID          : String(50);
+    status         : Status default 'Pending'; // NEW: status for approval
     address        : Composition of many Addresses on address.partner = $self;
+    documents      : Composition of many BusinessPartnerDocuments on documents.partner = $self;
+}
+
+entity BusinessPartnerDocuments : cuid, managed {
+    partner   : Association to BusinessPartners;
+    docType   : String enum { RIB; NIF; AI; };
+    @Core.MediaType: mediaType
+    content   : LargeBinary;
+    @Core.IsMediaType: true
+    mediaType : String;
+    fileName  : String;
 }
 
 entity Addresses : cuid {

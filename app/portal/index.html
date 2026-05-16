@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - SAP Fiori Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="sap-container">
+        <div class="sap-logo">
+            <img src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" alt="SAP Logo" style="width: 80px; margin-bottom: 10px;">
+            <br>SAP BTP
+        </div>
+        <div class="sap-title">Portail Partenaires & Administration</div>
+        
+        <div id="loginMessage" class="sap-message"></div>
+
+        <form id="loginForm">
+            <div class="sap-form-group">
+                <label class="sap-label" for="email">Adresse E-mail *</label>
+                <input type="email" id="email" class="sap-input" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|dz|fr|net|org)$" title="Veuillez entrer une adresse e-mail valide (ex: .com, .dz, .fr)" required>
+            </div>
+            
+            <div class="sap-form-group">
+                <label class="sap-label" for="password">Mot de passe</label>
+                <input type="password" id="password" class="sap-input" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="sap-btn">Se connecter</button>
+        </form>
+
+        <hr style="border:0; border-top:1px solid #d9d9d9; margin: 2rem 0;">
+        
+        <div style="text-align: center; font-size: 0.9rem; margin-bottom: 1rem;">
+            Voulez-vous devenir partenaire ?
+        </div>
+        <button type="button" class="sap-btn sap-btn-secondary" onclick="window.location.href='register.html'">Créer une demande d'inscription</button>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+ID,quote_ID,product_ID,quantity,price
+QI1,Q1,P001,1,150000.00
+QI2,Q1,P003,1,45000.00
+QI3,Q2,P003,1,45000.00
