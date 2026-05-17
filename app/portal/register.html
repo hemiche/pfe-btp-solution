@@ -67,6 +67,10 @@
                     <label class="sap-label" for="ai">Article d'Imposition AI (11 chiffres) *</label>
                     <input type="text" id="ai" class="sap-input" maxlength="11" minlength="11" pattern="\d{11}" title="Veuillez saisir exactement 11 chiffres" placeholder="Ex: 12345678901" required>
                 </div>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="rc">Registre de Commerce (RC) *</label>
+                    <input type="text" id="rc" class="sap-input" pattern="^\d{2}[/]?([A-C])[-]?\d{6,7}$" title="Format attendu: AA/N-XXXXXXX ou AANXXXXXXX (AA: année, N: A/B/C, XXXXXXX: 6 à 7 chiffres)" placeholder="Ex: 24/B-1234567 ou 24B1234567" required>
+                </div>
                 <div class="wizard-nav">
                     <button type="button" class="sap-btn sap-btn-secondary" onclick="window.location.href='index.html'">Annuler</button>
                     <button type="button" class="sap-btn" onclick="nextStep(2)">Suivant</button>
@@ -89,11 +93,11 @@
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="phoneNumber">Numéro de téléphone *</label>
-                    <input type="tel" id="phoneNumber" class="sap-input" placeholder="Ex: 0550123456" required>
+                    <input type="tel" id="phoneNumber" class="sap-input" pattern="^0\d{9}$" title="Veuillez saisir un numéro à 10 chiffres commençant par 0 (ex: 0550123456)" placeholder="Ex: 0550123456" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="email">Adresse E-mail *</label>
-                    <input type="email" id="email" class="sap-input" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|dz|fr|net|org)$" title="Veuillez entrer une adresse e-mail valide" required>
+                    <input type="email" id="email" class="sap-input" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Veuillez entrer une adresse e-mail valide (ex: contact@entreprise.dz)" placeholder="Ex: contact@entreprise.dz" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="password">Mot de passe *</label>
@@ -121,6 +125,11 @@
                 <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;">
                     Veuillez télécharger vos documents officiels. Ces fichiers seront vérifiés par l'administrateur.
                 </p>
+
+                <div class="sap-form-group file-upload-section">
+                    <label class="sap-label"><span class="icon">📜</span> Registre de Commerce (RC) *</label>
+                    <input type="file" id="fileRC" class="sap-input" accept=".pdf" required>
+                </div>
 
                 <div class="sap-form-group file-upload-section">
                     <label class="sap-label"><span class="icon">🏦</span> Relevé d'Identité Bancaire (RIB) *</label>

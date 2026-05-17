@@ -2,12 +2,12 @@ using { CRMService } from './crm-service';
 
 annotate CRMService.SalesOrders with {
     status @Common.ValueListWithFixedValues;
-    orderNumber @Common.FilterExpressionRestrictions: [{ Property: orderNumber, AllowedExpressions: 'SearchExpression' }];
+    orderNumber @Common.FilterExpressionRestrictions: [{ Property: orderNumber, AllowedExpressions: #SingleValue }];
 };
 
 annotate CRMService.Quotes with {
     status @Common.ValueListWithFixedValues;
-    quoteNumber @Common.FilterExpressionRestrictions: [{ Property: quoteNumber, AllowedExpressions: 'SearchExpression' }];
+    quoteNumber @Common.FilterExpressionRestrictions: [{ Property: quoteNumber, AllowedExpressions: #SingleValue }];
 };
 
 annotate CRMService.SalesOrders with @(

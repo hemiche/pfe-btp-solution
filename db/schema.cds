@@ -34,6 +34,7 @@ entity BusinessPartners : cuid, AuditFields {
     rib            : String(20);
     nif            : String(15);
     ai             : String(20);
+    rc             : String(20);
     motifRefus     : String(500);
     phoneNumber    : String(20);
     bpRole         : String enum {
@@ -50,7 +51,7 @@ entity BusinessPartners : cuid, AuditFields {
 
 entity BusinessPartnerDocuments : cuid, managed {
     partner   : Association to BusinessPartners;
-    docType   : String enum { RIB; NIF; AI; };
+    docType   : String enum { RIB; NIF; AI; RC; };
     @Core.MediaType: mediaType
     content   : LargeBinary;
     @Core.IsMediaType: true

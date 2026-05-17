@@ -1,40 +1,76 @@
 const cds = require('@sap/cds');
+const crypto = require('crypto');
+const util = require('util');
+const scrypt = util.promisify(crypto.scrypt);
+
+async function hashPassword(password) {
+    if (!password) return null;
+    const salt = crypto.randomBytes(16).toString('hex');
+    const derivedKey = await scrypt(password, salt, 64);
+    return salt + ':' + derivedKey.toString('hex');
+}
+
+async function verifyPassword(password, hash) {
+    if (!password || !hash) return false;
+    if (!hash.includes(':')) return false; // Not a hashed password
+    const [salt, key] = hash.split(':');
+    const keyBuffer = Buffer.from(key, 'hex');
+    const derivedKey = await scrypt(password, salt, 64);
+    return crypto.timingSafeEqual(keyBuffer, derivedKey);
+}
 
 module.exports = cds.service.impl(async function() {
     const { BusinessPartners } = cds.entities('pfe.btp');
 
     async function _checkUniqueness(data, req) {
-        const email = data.email ? data.email.trim() : null;
+        const email = data.email ? data.email.trim().toLowerCase() : null;
         const companyName = data.companyName ? data.companyName.trim() : null;
         const rib = data.rib ? data.rib.trim() : null;
         const nif = data.nif ? data.nif.trim() : null;
         const ai = data.ai ? data.ai.trim() : null;
+        const rc = data.rc ? data.rc.trim().toUpperCase() : null;
         const phoneNumber = data.phoneNumber ? data.phoneNumber.trim() : null;
         
 
         if (email) {
-            const res = await SELECT.one.from(BusinessPartners).where({ email: email, status: 'Approved' });
-            if (res) return "Cet Email est déjà utilisé par un partenaire approuvé.";
-        }
-        if (companyName) {
-            const res = await SELECT.one.from(BusinessPartners).where`UPPER(companyName) = ${companyName.toUpperCase()} and status = 'Approved'`;
-            if (res) return "Ce Nom de société est déjà utilisé par un partenaire approuvé.";
-        }
-        if (rib) {
-            const res = await SELECT.one.from(BusinessPartners).where({ rib: rib, status: 'Approved' });
-            if (res) return "Ce RIB est déjà utilisé par un partenaire approuvé.";
-        }
-        if (nif) {
-            const res = await SELECT.one.from(BusinessPartners).where({ nif: nif, status: 'Approved' });
-            if (res) return "Ce NIF est déjà utilisé par un partenaire approuvé.";
-        }
-        if (ai) {
-            const res = await SELECT.one.from(BusinessPartners).where({ ai: ai, status: 'Approved' });
-            if (res) return "Cet Article d'Imposition (AI) est déjà utilisé par un partenaire approuvé.";
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                return "Le format de l'adresse e-mail est invalide.";
+            }
+            const res = await SELECT.one.from(BusinessPartners).where`email = ${email} and status in ('Approved', 'Pending')`;
+            if (res) return "Cet E-mail est déjà enregistré dans la base de données.";
         }
         if (phoneNumber) {
-            const res = await SELECT.one.from(BusinessPartners).where({ phoneNumber: phoneNumber, status: 'Approved' });
-            if (res) return "Ce Numéro de téléphone est déjà utilisé par un partenaire approuvé.";
+            const phoneRegex = /^0\d{9}$/;
+            if (!phoneRegex.test(phoneNumber)) {
+                return "Le format du numéro de téléphone est invalide. Il doit comporter 10 chiffres et commencer par 0 (ex: 0550123456).";
+            }
+            const res = await SELECT.one.from(BusinessPartners).where`phoneNumber = ${phoneNumber} and status in ('Approved', 'Pending')`;
+            if (res) return "Ce Numéro de téléphone est déjà enregistré dans la base de données.";
+        }
+        if (companyName) {
+            const res = await SELECT.one.from(BusinessPartners).where`UPPER(companyName) = ${companyName.toUpperCase()} and status in ('Approved', 'Pending')`;
+            if (res) return "Ce Nom de société est déjà enregistré dans la base de données.";
+        }
+        if (rib) {
+            const res = await SELECT.one.from(BusinessPartners).where`rib = ${rib} and status in ('Approved', 'Pending')`;
+            if (res) return "Ce RIB est déjà enregistré dans la base de données.";
+        }
+        if (nif) {
+            const res = await SELECT.one.from(BusinessPartners).where`nif = ${nif} and status in ('Approved', 'Pending')`;
+            if (res) return "Ce NIF est déjà enregistré dans la base de données.";
+        }
+        if (ai) {
+            const res = await SELECT.one.from(BusinessPartners).where`ai = ${ai} and status in ('Approved', 'Pending')`;
+            if (res) return "Cet Article d'Imposition (AI) est déjà enregistré dans la base de données.";
+        }
+        if (rc) {
+            const rcRegex = /^\d{2}[/]?[ABC][-]?\d{6,7}$/;
+            if (!rcRegex.test(rc)) {
+                return "Le format du Registre de Commerce (RC) est invalide. Formats acceptés : AA/N-XXXXXXX ou AANXXXXXXX (ex: 24/B-1234567 ou 24B1234567).";
+            }
+            const res = await SELECT.one.from(BusinessPartners).where`rc = ${rc} and status in ('Approved', 'Pending')`;
+            if (res) return "Ce Registre de Commerce (RC) est déjà enregistré dans la base de données.";
         }
         
         return null;
@@ -47,12 +83,13 @@ module.exports = cds.service.impl(async function() {
     });
 
     this.on('registerPartner', async (req) => {
-        let { companyName, secteurActivite, rib, nif, ai, email, password, confirmPassword, bpRole, phoneNumber, fullNameResponsible, documents, onlyCheck } = req.data;
+        let { companyName, secteurActivite, rib, nif, ai, rc, email, password, confirmPassword, bpRole, phoneNumber, fullNameResponsible, documents, onlyCheck } = req.data;
 
-        email = email ? email.trim() : '';
+        email = email ? email.trim().toLowerCase() : '';
         rib = rib ? rib.trim() : '';
         nif = nif ? nif.trim() : '';
         ai = ai ? ai.trim() : '';
+        rc = rc ? rc.trim().toUpperCase() : '';
         companyName = companyName ? companyName.trim() : '';
 
         // 1. Vérification des doublons (S'applique au check et au register)
@@ -74,6 +111,7 @@ module.exports = cds.service.impl(async function() {
         if (rib) filters.push({ rib: rib });
         if (nif) filters.push({ nif: nif });
         if (ai) filters.push({ ai: ai });
+        if (rc) filters.push({ rc: rc });
 
         if (filters.length > 0) {
             let query = SELECT.one.from(BusinessPartners);
@@ -84,19 +122,23 @@ module.exports = cds.service.impl(async function() {
             const existing = await query;
             
             if (existing && existing.status !== 'Approved') {
+                await DELETE.from('pfe.btp.BusinessPartnerDocuments').where({ partner_ID: existing.ID });
                 await DELETE.from(BusinessPartners).where({ ID: existing.ID });
             }
         }
 
         // Préparer l'objet partenaire
+        const partnerID = cds.utils.uuid();
         const newPartner = {
+            ID: partnerID,
             companyName: companyName,
             secteurActivite: secteurActivite,
             rib: rib,
             nif: nif,
             ai: ai,
+            rc: rc,
             email: email,
-            password: password,
+            password: await hashPassword(password),
             phoneNumber: phoneNumber,
             fullNameResponsible: fullNameResponsible,
             bpRole: bpRole,
@@ -105,7 +147,6 @@ module.exports = cds.service.impl(async function() {
         };
 
         await INSERT.into(BusinessPartners).entries(newPartner);
-        const partnerID = newPartner.ID; 
 
         // Créer les documents si présents
         if (documents && partnerID) {
@@ -129,16 +170,31 @@ module.exports = cds.service.impl(async function() {
     });
 
     this.on('login', async (req) => {
-        const { email, password } = req.data;
+        let { email, password } = req.data;
+        email = email ? email.trim().toLowerCase() : '';
+
+        const resObj = (req.http && req.http.res) || (req._ && req._.req && req._.req.res);
 
         // Admin override (for test purposes)
         if (email === 'admin@pfe.dz' && password === 'admin') {
-             return JSON.stringify({ status: 'Approved', role: 'Admin', name: 'Administrateur' });
+            if (resObj && typeof resObj.cookie === 'function') {
+                resObj.cookie('pfe_user', encodeURIComponent(email), { path: '/' });
+                resObj.cookie('pfe_role', 'Admin', { path: '/' });
+            }
+            return JSON.stringify({ status: 'Approved', role: 'Admin', name: 'Administrateur' });
         }
 
-        const user = await SELECT.one.from(BusinessPartners).where({ email: email, password: password });
+        const user = await SELECT.one.from(BusinessPartners).where({ email: email });
         if (!user) {
             return req.reject(401, 'Email ou mot de passe incorrect.');
+        }
+
+        const isPasswordValid = await verifyPassword(password, user.password);
+        if (!isPasswordValid) {
+            // Tolérance pour les anciennes données de test en clair
+            if (user.password !== password) {
+                return req.reject(401, 'Email ou mot de passe incorrect.');
+            }
         }
 
         if (user.status === 'Pending') {
@@ -146,10 +202,14 @@ module.exports = cds.service.impl(async function() {
         }
         
         if (user.status === 'Rejected') {
-            return JSON.stringify({ status: 'Rejected', message: `Refusé : ${user.motifRefus || 'Non spécifié'}` });
+            return JSON.stringify({ status: 'Rejected', motif: user.motifRefus || 'Non spécifié' });
         }
 
         // Approved
+        if (resObj && typeof resObj.cookie === 'function') {
+            resObj.cookie('pfe_user', encodeURIComponent(email), { path: '/' });
+            resObj.cookie('pfe_role', user.bpRole === 'Admin' ? 'Admin' : 'User', { path: '/' });
+        }
         return JSON.stringify({ status: 'Approved', role: user.bpRole, name: user.companyName });
     });
 });

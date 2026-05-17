@@ -2,16 +2,16 @@ using { SRMService } from './srm-service';
 
 annotate SRMService.RFQs with {
     status @Common.ValueListWithFixedValues;
-    rfqNumber @Common.FilterExpressionRestrictions: [{ Property: rfqNumber, AllowedExpressions: 'SearchExpression' }];
+    rfqNumber @Common.FilterExpressionRestrictions: [{ Property: rfqNumber, AllowedExpressions: #SingleValue }];
 };
 
 annotate SRMService.PurchaseOrders with {
     status @Common.ValueListWithFixedValues;
-    poNumber @Common.FilterExpressionRestrictions: [{ Property: poNumber, AllowedExpressions: 'SearchExpression' }];
+    poNumber @Common.FilterExpressionRestrictions: [{ Property: poNumber, AllowedExpressions: #SingleValue }];
 };
 
 annotate SRMService.Suppliers with {
-    companyName @Common.FilterExpressionRestrictions: [{ Property: companyName, AllowedExpressions: 'SearchExpression' }];
+    companyName @Common.FilterExpressionRestrictions: [{ Property: companyName, AllowedExpressions: #SingleValue }];
 };
 
 annotate SRMService.RFQs with @(

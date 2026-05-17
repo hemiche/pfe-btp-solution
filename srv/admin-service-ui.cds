@@ -9,7 +9,7 @@ annotate AdminService.BusinessPartnerDocuments with {
 
 annotate AdminService.BusinessPartners with {
     status      @Common.Text: statusText @Common.TextArrangement: #TextOnly @Common.ValueListWithFixedValues;
-    companyName @title: 'Entreprise' @Common.FilterExpressionRestrictions: [{ Property: companyName, AllowedExpressions: 'SearchExpression' }];
+    companyName @title: 'Entreprise' @Common.FilterExpressionRestrictions: [{ Property: companyName, AllowedExpressions: #SingleValue }];
     email       @title: 'Email';
     bpRole      @title: 'Rôle' @Common.ValueListWithFixedValues;
     statusText  @title: 'Statut';
@@ -53,6 +53,7 @@ annotate AdminService.BusinessPartners with @(
                 { Value: companyName, Label: 'Entreprise' },
                 { Value: secteurActivite, Label: 'Secteur d''activité' },
                 { Value: fullNameResponsible, Label: 'Responsable' },
+                { Value: rc, Label: 'Registre de Commerce (RC)' },
                 { Value: rib, Label: 'RIB' },
                 { Value: nif, Label: 'NIF' },
                 { Value: ai, Label: 'Article d''Imposition AI (11 chiffres)' },

@@ -8,6 +8,7 @@ service PublicService {
         rib: String,
         nif: String,
         ai: String,
+        rc: String,
         email: String,
         password: String,
         confirmPassword: String,
@@ -25,6 +26,7 @@ service PublicService {
         rib: String,
         nif: String,
         ai: String,
+        rc: String,
         email: String,
         phoneNumber: String
     ) returns String;

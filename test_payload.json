@@ -1,0 +1,15 @@
+{
+  "companyName": "Test Partner PFE",
+  "secteurActivite": "BTP",
+  "rib": "11112222333344445555",
+  "nif": "111112222233333",
+  "ai": "11111122222",
+  "email": "testpfe@gmail.com",
+  "password": "Password123!",
+  "confirmPassword": "Password123!",
+  "bpRole": "Supplier",
+  "phoneNumber": "0550998877",
+  "fullNameResponsible": "Monsieur Test",
+  "documents": "[]",
+  "onlyCheck": false
+}

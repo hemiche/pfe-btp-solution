@@ -29,27 +29,32 @@
         "kind": "sql"
       },
       "auth": {
-        "kind": "mocked",
-        "users": {
-          "admin@pfe.dz": {
-            "password": "admin",
-            "roles": [
-              "Admin",
-              "authenticated-user"
-            ]
-          },
-          "alice": {
-            "roles": [
-              "Admin",
-              "authenticated-user"
-            ]
-          },
-          "bob": {
-            "roles": [
-              "User",
-              "authenticated-user"
-            ]
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "admin@pfe.dz": {
+              "password": "admin",
+              "roles": [
+                "Admin",
+                "authenticated-user"
+              ]
+            },
+            "alice": {
+              "roles": [
+                "Admin",
+                "authenticated-user"
+              ]
+            },
+            "bob": {
+              "roles": [
+                "User",
+                "authenticated-user"
+              ]
+            }
           }
+        },
+        "[production]": {
+          "kind": "xsuaa"
         }
       }
     }

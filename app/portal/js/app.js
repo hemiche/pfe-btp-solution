@@ -18,8 +18,14 @@ if (loginForm) {
             });
 
             if (!response.ok) {
-                const errData = await response.json();
-                messageBox.textContent = errData.error?.message || 'Erreur de connexion.';
+                let msg = 'Erreur de connexion.';
+                try {
+                    const errData = await response.json();
+                    msg = errData.error?.message || msg;
+                } catch(e) {
+                    msg = await response.text();
+                }
+                messageBox.textContent = msg;
                 messageBox.classList.add('error');
                 return;
             }
@@ -31,7 +37,10 @@ if (loginForm) {
                 messageBox.textContent = 'Votre compte n\'est pas encore approuvé par l\'administrateur.';
                 messageBox.classList.add('warning');
             } else if (result.status === 'Rejected') {
-                messageBox.textContent = result.message;
+                messageBox.innerHTML = `<strong>Dossier refusé</strong><br/>
+Votre demande d'inscription a été rejetée par l'administrateur.<br/>
+Motif : ${result.motif || 'Non spécifié'}<br/><br/>
+<a href="register.html" style="color: inherit; text-decoration: underline; font-weight: bold;">Cliquez ici pour soumettre une nouvelle demande</a>`;
                 messageBox.classList.add('error');
             } else if (result.status === 'Approved') {
                 messageBox.textContent = 'Connexion réussie ! Redirection...';
@@ -105,6 +114,7 @@ window.nextStep = async function(step) {
             rib: document.getElementById('rib').value.trim(),
             nif: document.getElementById('nif').value.trim(),
             ai: document.getElementById('ai').value.trim(),
+            rc: document.getElementById('rc').value.trim(),
             onlyCheck: true
         };
 
@@ -222,11 +232,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const docs = [];
+            const fileRC = document.getElementById('fileRC').files[0];
             const fileRIB = document.getElementById('fileRIB').files[0];
             const fileNIF = document.getElementById('fileNIF').files[0];
             const fileAI = document.getElementById('fileAI').files[0];
 
             console.log('Converting files to base64...');
+            if (fileRC) docs.push({ type: 'RC', fileName: fileRC.name, content: await toBase64(fileRC) });
             if (fileRIB) docs.push({ type: 'RIB', fileName: fileRIB.name, content: await toBase64(fileRIB) });
             if (fileNIF) docs.push({ type: 'NIF', fileName: fileNIF.name, content: await toBase64(fileNIF) });
             if (fileAI) docs.push({ type: 'AI', fileName: fileAI.name, content: await toBase64(fileAI) });
@@ -237,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rib: document.getElementById('rib').value.trim(),
                 nif: document.getElementById('nif').value.trim(),
                 ai: document.getElementById('ai').value.trim(),
+                rc: document.getElementById('rc').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 password: password,
                 confirmPassword: confirmPassword,
