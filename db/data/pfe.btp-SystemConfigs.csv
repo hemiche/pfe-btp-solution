@@ -1,0 +1,7 @@
+ID,configKey,configValue,description,category,createdAt,createdBy
+cfg-0001-0001-0001-000000000001,COMPANY_NAME,Ma Startup DZ,Nom de la société,General,2026-01-01T00:00:00Z,admin@pfe.dz
+cfg-0001-0001-0001-000000000002,COMPANY_ADDRESS,123 Rue de la Paix - Alger 16000,Adresse du siège social,General,2026-01-01T00:00:00Z,admin@pfe.dz
+cfg-0001-0001-0001-000000000003,DEFAULT_CURRENCY,DZD,Devise par défaut (ISO),Finance,2026-01-01T00:00:00Z,admin@pfe.dz
+cfg-0001-0001-0001-000000000004,DEFAULT_TVA,19,Taux de TVA par défaut (%),Finance,2026-01-01T00:00:00Z,admin@pfe.dz
+cfg-0001-0001-0001-000000000005,INVOICE_DUE_DAYS,30,Délai de paiement des factures (jours),Finance,2026-01-01T00:00:00Z,admin@pfe.dz
+cfg-0001-0001-0001-000000000006,MAX_FILE_SIZE_MB,20,Taille maximale des fichiers uploadés (MB),Sécurité,2026-01-01T00:00:00Z,admin@pfe.dz

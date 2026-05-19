@@ -1,0 +1,3 @@
+ID,title,message,notifType,isRead,sentBy,createdAt,createdBy
+notif-0001-0001-0001-000000000001,Bienvenue sur la plateforme,Votre compte a été approuvé. Bienvenue !,Info,false,admin@pfe.dz,2026-01-15T09:01:00Z,admin@pfe.dz
+notif-0001-0001-0001-000000000002,Alerte Stock Faible,Plusieurs produits sont en dessous du stock minimum.,Alert,false,admin@pfe.dz,2026-05-01T08:00:00Z,admin@pfe.dz

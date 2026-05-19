@@ -1,4 +1,9 @@
-ID,name,description,category,price,currency_code,stockLevel
-P001,Laptop Pro,High performance laptop,Electronics,150000.00,DZD,50
-P002,Office Chair,Ergonomic chair,Furniture,25000.00,DZD,100
-P003,Monitor 27",4K UHD Monitor,Electronics,45000.00,DZD,30
+ID,sku,name,description,category,productType,price,tvaRate,unitOfMeasure,currency_code,stockLevel,stockMinimum,isActive
+P001,SKU-LAPTOP-001,Laptop Pro,Ordinateur portable haute performance,Informatique,Produit,150000.00,19,Pièce,DZD,50,5,true
+P002,SKU-CHAIR-001,Chaise Ergonomique,Chaise de bureau ergonomique,Mobilier,Produit,25000.00,19,Pièce,DZD,3,5,true
+P003,SKU-MON-001,Moniteur 27",Écran 4K UHD 27 pouces,Informatique,Produit,45000.00,19,Pièce,DZD,30,10,true
+P004,SKU-SVC-001,Maintenance Informatique,Service de maintenance annuelle,Services,Service,18000.00,19,Heure,DZD,0,0,true
+P005,SKU-CIM-001,Ciment Portland,Sac de ciment 50kg,Matériaux BTP,Produit,850.00,9,KG,DZD,2,50,true
+P006,SKU-FER-001,Fer à béton 12mm,Barre d'acier pour béton armé,Matériaux BTP,Produit,2200.00,19,Pièce,DZD,200,20,true
+P007,SKU-LOG-001,Logiciel CRM,Licence logicielle annuelle,Logiciels,Service,75000.00,19,Pièce,DZD,0,0,false
+P008,SKU-IMP-001,Imprimante Laser,Imprimante laser multifonction A4,Bureautique,Produit,35000.00,19,Pièce,DZD,15,3,true

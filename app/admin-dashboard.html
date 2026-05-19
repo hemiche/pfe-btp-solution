@@ -3,127 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portail d'Administration Centralisé</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: "72", "Segoe UI", Arial, sans-serif;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            background-color: #f4f4f4;
-        }
-        
-        .sidebar {
-            width: 260px;
-            background-color: #1a1a2e;
-            color: #d1d1e0;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-        
-        .sidebar-header {
-            padding: 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: white;
-            background-color: #0a6ed1; /* SAP Blue */
-            text-align: center;
-        }
-        
-        .menu-title {
-            padding: 15px 20px 5px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #6c6c8e;
-        }
-        
-        .menu-item {
-            padding: 15px 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-left: 4px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .menu-item:hover {
-            background-color: #2a2a4a;
-            color: white;
-        }
-        
-        .menu-item.active {
-            background-color: #2a2a4a;
-            border-left-color: #0a6ed1;
-            color: white;
-            font-weight: bold;
-        }
-        
-        .content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: #fff;
-        }
-        
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .icon {
-            font-size: 1.2rem;
-        }
-    </style>
+    <title>Administration — PFE BTP Solution</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="admin-dashboard.css">
 </head>
 <body>
-
-    <!-- SIDEBAR GAUCHE -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            🛡️ Admin Portal
-        </div>
-        
-        <div class="menu-title">Gestion de l'accès</div>
-        <div class="menu-item active" onclick="loadModule(this, '/$fiori-preview/AdminService/BusinessPartners#preview-app')">
-            <span class="icon">👥</span> Partenaires
-        </div>
-        
-        <div class="menu-title">Opérations</div>
-        <div class="menu-item" onclick="loadModule(this, '/$fiori-preview/AdminService/Products#preview-app')">
-            <span class="icon">📦</span> Catalogue Produits
-        </div>
-        
-        <div class="menu-title">Statistiques</div>
-        <div class="menu-item" onclick="loadModule(this, '/$fiori-preview/AnalyticsService/MonthlySales#preview-app')">
-            <span class="icon">📊</span> Analytics KPIs
-        </div>
-        
-        <div style="margin-top: auto;" class="menu-item" onclick="window.location.href='/portal/index.html'">
-            <span class="icon">🚪</span> Déconnexion
-        </div>
+<div class="shell">
+  <!-- ══ SIDEBAR ══════════════════════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">🛡️</span>
+      <div><div class="brand-title">PFE BTP</div><div class="brand-sub">Admin Portal</div></div>
     </div>
 
-    <!-- CONTENU PRINCIPAL (APP FIORI) -->
-    <div class="content">
-        <!-- Par défaut, on charge la page des Partenaires -->
-        <iframe id="moduleFrame" src="/$fiori-preview/AdminService/BusinessPartners#preview-app"></iframe>
-    </div>
+    <nav class="nav-menu">
+      <div class="nav-section-title">Vue d'ensemble</div>
+      <a class="nav-item active" id="nav-dashboard" onclick="showSection('dashboard',this)">
+        <span>📊</span> Tableau de Bord
+      </a>
 
-    <script>
-        function loadModule(element, url) {
-            // Retirer la classe active de tous les menus
-            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-            // Ajouter la classe active au menu cliqué
-            element.classList.add('active');
-            // Changer l'URL de l'iframe
-            document.getElementById('moduleFrame').src = url;
-        }
-    </script>
+      <div class="nav-section-title">Gestion Accès</div>
+      <a class="nav-item" id="nav-inscriptions" onclick="showSection('inscriptions',this)">
+        <span>📝</span> Inscriptions KYC
+        <span class="badge" id="badge-inscriptions">0</span>
+      </a>
+      <a class="nav-item" id="nav-partners" onclick="showSection('partners',this)">
+        <span>👥</span> Partenaires
+      </a>
+
+      <div class="nav-section-title">Catalogue</div>
+      <a class="nav-item" id="nav-products" onclick="showSection('products',this)">
+        <span>📦</span> Produits &amp; Services
+        <span class="badge badge-warn" id="badge-stock">0</span>
+      </a>
+
+      <div class="nav-section-title">SRM</div>
+      <a class="nav-item" id="nav-rfqs" onclick="showSection('rfqs',this)">
+        <span>📋</span> Appels d'Offres (RFQs)
+        <span class="badge badge-success" id="badge-rfqs">0</span>
+      </a>
+
+      <div class="nav-section-title">Paramètres</div>
+      <a class="nav-item" id="nav-audit" onclick="showSection('audit',this)">
+        <span>🔍</span> Logs d'Audit
+      </a>
+      <a class="nav-item" id="nav-notifs" onclick="showSection('notifs',this)">
+        <span>🔔</span> Notifications
+        <span class="badge badge-warn" id="badge-notifs">0</span>
+      </a>
+      <a class="nav-item" id="nav-config" onclick="showSection('config',this)">
+        <span>⚙️</span> Configuration
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <span id="admin-name">Administrateur</span>
+      <a class="logout-btn" onclick="logout()">Déconnexion</a>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ═════════════════════════════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <section id="section-dashboard" class="content-section active">
+      <div class="page-header">
+        <div class="header-left">
+          <h1>Tableau de Bord</h1>
+          <span class="page-date" id="current-date"></span>
+        </div>
+        
+        <!-- Filtres Fiori Double Select : Mois & Année (8 ans en arrière) -->
+        <div class="filter-wrapper">
+          <label class="filter-label">Mois d'analyse :</label>
+          <div class="filter-container">
+            <select id="filter-month-select" class="sap-select-filter" onchange="loadDashboardData()">
+              <option value="01">Janvier</option>
+              <option value="02">Février</option>
+              <option value="03">Mars</option>
+              <option value="04">Avril</option>
+              <option value="05">Mai</option>
+              <option value="06">Juin</option>
+              <option value="07">Juillet</option>
+              <option value="08">Août</option>
+              <option value="09">Septembre</option>
+              <option value="10">Octobre</option>
+              <option value="11">Novembre</option>
+              <option value="12">Décembre</option>
+            </select>
+            <select id="filter-year-select" class="sap-select-filter" onchange="loadDashboardData()">
+              <!-- Généré dynamiquement en JS (Année en cours + 8 ans en arrière) -->
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card blue">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Chiffre d'Affaires</div>
+            <div class="kpi-value" id="kpi-ca">—</div>
+            <div class="kpi-sub" id="ca-subtitle">Ventes de ce mois</div>
+          </div>
+        </div>
+        <div class="kpi-card orange">
+          <div class="kpi-icon">⏳</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Encours Clients</div>
+            <div class="kpi-value" id="kpi-encours">—</div>
+            <div class="kpi-sub">Factures en attente</div>
+          </div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Clients Actifs</div>
+            <div class="kpi-value" id="kpi-clients">—</div>
+            <div class="kpi-sub">Comptes approuvés</div>
+          </div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-icon">🚚</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Fournisseurs</div>
+            <div class="kpi-value" id="kpi-suppliers">—</div>
+            <div class="kpi-sub">Partenaires actifs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts + Top -->
+      <div class="dashboard-grid">
+        <div class="card chart-card">
+          <div class="card-header" id="chart-header">📈 CA Journalier — Évolution</div>
+          <div class="chart-container">
+            <canvas id="chart-sales"></canvas>
+          </div>
+        </div>
+        <div class="card alerts-card">
+          <div class="card-header">🚨 Alertes</div>
+          <div id="alerts-list"><div class="empty-state">Chargement...</div></div>
+        </div>
+      </div>
+
+      <div class="top-grid">
+        <div class="card">
+          <div class="card-header" id="top-clients-header">🏆 Top 5 Clients</div>
+          <div id="top-clients" class="top-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="top-products-header">📦 Top 5 Produits</div>
+          <div id="top-products" class="top-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="top-suppliers-header">🤝 Top 5 Fournisseurs</div>
+          <div id="top-suppliers" class="top-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIORI IFRAMES -->
+    <section id="section-inscriptions" class="content-section iframe-section">
+      <iframe id="frame-inscriptions" src="/$fiori-preview/AdminService/Inscriptions#preview-app"></iframe>
+    </section>
+    <section id="section-partners" class="content-section iframe-section">
+      <iframe id="frame-partners" src="/$fiori-preview/AdminService/BusinessPartners#preview-app"></iframe>
+    </section>
+    <section id="section-products" class="content-section iframe-section">
+      <iframe id="frame-products" src="/$fiori-preview/AdminService/Products#preview-app"></iframe>
+    </section>
+    <section id="section-rfqs" class="content-section iframe-section">
+      <iframe id="frame-rfqs" src="/$fiori-preview/SRMService/RFQs#preview-app"></iframe>
+    </section>
+    <section id="section-audit" class="content-section iframe-section">
+      <iframe id="frame-audit" src="/$fiori-preview/AdminService/AuditLogs#preview-app"></iframe>
+    </section>
+    <section id="section-notifs" class="content-section iframe-section">
+      <iframe id="frame-notifs" src="/$fiori-preview/AdminService/Notifications#preview-app"></iframe>
+    </section>
+    <section id="section-config" class="content-section iframe-section">
+      <iframe id="frame-config" src="/$fiori-preview/AdminService/SystemConfigs#preview-app"></iframe>
+    </section>
+
+  </main>
+</div>
+
+<script src="admin-dashboard.js"></script>
 </body>
 </html>

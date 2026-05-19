@@ -12,16 +12,18 @@ annotate CRMService.Quotes with {
 
 annotate CRMService.SalesOrders with @(
     UI: {
-        SelectionFields: [ orderNumber, status ],
+        SelectionFields: [ orderNumber, status, client, orderDate ],
         LineItem: [
-            { Value: orderNumber, Label: 'N° Commande' },
-            { Value: client.companyName, Label: 'Client' },
-            { Value: orderDate, Label: 'Date' },
-            { Value: totalAmount, Label: 'Montant Total' },
-            { Value: currency_code, Label: 'Devise' },
+            { Value: orderNumber, Label: 'N° Commande', Importance: #High, ![@HTML5.CssDefaults]: { width: '9rem' } },
+            { Value: client.companyName, Label: 'Client', Importance: #High, ![@HTML5.CssDefaults]: { width: '13rem' } },
+            { Value: orderDate, Label: 'Date', Importance: #High, ![@HTML5.CssDefaults]: { width: '8rem' } },
+            { Value: totalAmount, Label: 'Montant Total', Importance: #High, ![@HTML5.CssDefaults]: { width: '9rem' } },
+            { Value: currency_code, Label: 'Devise', Importance: #High, ![@HTML5.CssDefaults]: { width: '5rem' } },
             { 
                 Value: status, 
                 Label: 'Statut',
+                Importance: #High,
+                ![@HTML5.CssDefaults]: { width: '7rem' },
                 Criticality: #Positive // Simple color mapping for demo
             },
             { $Type: 'UI.DataFieldForAction', Action: 'CRMService.generateInvoice', Label: 'Générer Facture' }
@@ -59,14 +61,14 @@ annotate CRMService.SalesOrders with @(
 
 annotate CRMService.Quotes with @(
     UI: {
-        SelectionFields: [ quoteNumber, status ],
+        SelectionFields: [ quoteNumber, status, client, quoteDate ],
         LineItem: [
-            { Value: quoteNumber, Label: 'N° Devis' },
-            { Value: client.companyName, Label: 'Client' },
-            { Value: quoteDate, Label: 'Date Devis' },
-            { Value: totalAmount, Label: 'Montant Total' },
-            { Value: currency_code, Label: 'Devise' },
-            { Value: status, Label: 'Statut' },
+            { Value: quoteNumber, Label: 'N° Devis', Importance: #High, ![@HTML5.CssDefaults]: { width: '8rem' } },
+            { Value: client.companyName, Label: 'Client', Importance: #High, ![@HTML5.CssDefaults]: { width: '13rem' } },
+            { Value: quoteDate, Label: 'Date Devis', Importance: #High, ![@HTML5.CssDefaults]: { width: '8rem' } },
+            { Value: totalAmount, Label: 'Montant Total', Importance: #High, ![@HTML5.CssDefaults]: { width: '9rem' } },
+            { Value: currency_code, Label: 'Devise', Importance: #High, ![@HTML5.CssDefaults]: { width: '5rem' } },
+            { Value: status, Label: 'Statut', Importance: #High, ![@HTML5.CssDefaults]: { width: '7rem' } },
             { $Type: 'UI.DataFieldForAction', Action: 'CRMService.convertToOrder', Label: 'Convertir en Commande' }
         ],
         HeaderInfo: {

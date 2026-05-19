@@ -3,10 +3,13 @@ using { pfe.btp as my } from '../db/schema';
 service SRMService @(requires: 'authenticated-user') {
     @readonly entity Products as projection on my.Products;
     
+    @odata.draft.enabled
     entity RFQs as projection on my.RFQs actions {
         @(cds.odata.bindingparameter.name: '_it', Common.SideEffects: {TargetEntities: ['/SRMService/PurchaseOrders']})
         action convertToPO() returns PurchaseOrders;
     };
+
+    entity RFQItems as projection on my.RFQItems;
 
     entity PurchaseOrders @(restrict: [
         { grant: '*', to: 'Admin' },
@@ -22,4 +25,10 @@ service SRMService @(requires: 'authenticated-user') {
         *
     } where bpRole = 'Supplier';
     entity Invoices as projection on my.Invoices where orderType = 'Purchase';
+
+    @readonly
+    entity Statuses {
+        key code : String;
+            name : String;
+    }
 }

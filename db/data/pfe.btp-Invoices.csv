@@ -1,3 +1,6 @@
 ID,invoiceNumber,orderType,salesOrder_ID,purchaseOrder_ID,amount,currency_code,dueDate,status
 INV1,INV-S-001,Sales,SO1,,195000.00,DZD,2026-06-10,Pending
 INV2,INV-P-001,Purchase,,PO1,250000.00,DZD,2026-06-11,Pending
+INV3,INV-S-002,Sales,SO2,,300000.00,DZD,2026-06-01,Pending
+INV4,INV-S-003,Sales,SO5,,45000.00,DZD,2026-06-15,Pending
+INV5,INV-S-004,Sales,SO7,,220000.00,DZD,2026-06-18,Pending

@@ -1,0 +1,8 @@
+ID,rangeType,prefix,currentNum,description,createdAt,createdBy
+nr-0001-0001-0001-000000000001,QT,QT-,0,Numérotation des Devis,2026-01-01T00:00:00Z,admin@pfe.dz
+nr-0001-0001-0001-000000000002,SO,SO-,0,Numérotation des Commandes Clients,2026-01-01T00:00:00Z,admin@pfe.dz
+nr-0001-0001-0001-000000000003,INV,INV-,0,Numérotation des Factures Clients,2026-01-01T00:00:00Z,admin@pfe.dz
+nr-0001-0001-0001-000000000004,RFQ,RFQ-,0,Numérotation des Appels d'offres,2026-01-01T00:00:00Z,admin@pfe.dz
+nr-0001-0001-0001-000000000005,PO,PO-,0,Numérotation des Bons de Commande,2026-01-01T00:00:00Z,admin@pfe.dz
+nr-0001-0001-0001-000000000006,PINV,PINV-,0,Numérotation des Factures Fournisseurs,2026-01-01T00:00:00Z,admin@pfe.dz
+nr-0001-0001-0001-000000000007,GR,GR-,0,Numérotation des Bons de Réception,2026-01-01T00:00:00Z,admin@pfe.dz

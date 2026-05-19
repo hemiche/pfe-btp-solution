@@ -1,0 +1,4 @@
+ID,action,targetType,targetID,targetLabel,performedBy,detail,createdAt,createdBy
+al-0001-0001-0001-000000000001,APPROVE,BusinessPartners,e73c8868-3d14-4632-9c3a-866417764001,TechStart DZ,admin@pfe.dz,Inscription approuvée,2026-01-15T09:00:00Z,admin@pfe.dz
+al-0001-0001-0001-000000000002,APPROVE,BusinessPartners,e73c8868-3d14-4632-9c3a-866417764002,Batiment Pro,admin@pfe.dz,Inscription approuvée,2026-01-16T10:30:00Z,admin@pfe.dz
+al-0001-0001-0001-000000000003,APPROVE,BusinessPartners,e73c8868-3d14-4632-9c3a-866417764003,Logistique Plus,admin@pfe.dz,Inscription approuvée,2026-02-01T08:15:00Z,admin@pfe.dz

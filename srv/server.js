@@ -18,8 +18,8 @@ cds.on('bootstrap', (app) => {
                     } else {
                         req.headers.authorization = 'Basic ' + Buffer.from('bob:').toString('base64');
                     }
-                } else if (req.originalUrl && (req.originalUrl.includes('/odata/v4/admin') || req.originalUrl.includes('/admin-btp'))) {
-                    // Par défaut en dev local, donner les droits Admin sur les routes de gestion administrateur
+                } else if (req.originalUrl && (req.originalUrl.includes('/odata/v4/admin') || req.originalUrl.includes('/admin-btp') || req.originalUrl.includes('/odata/v4/analytics'))) {
+                    // Par défaut en dev local, donner les droits Admin sur les routes de gestion administrateur et analytiques
                     req.headers.authorization = 'Basic ' + Buffer.from('admin@pfe.dz:admin').toString('base64');
                 } else if (req.originalUrl && (req.originalUrl.includes('/odata/v4/crm') || req.originalUrl.includes('/odata/v4/srm'))) {
                     req.headers.authorization = 'Basic ' + Buffer.from('bob:').toString('base64');

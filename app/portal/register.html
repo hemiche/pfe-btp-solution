@@ -3,26 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - SAP Fiori Portal</title>
+    <title>Inscription - SAP BTP Portail Partenaires</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .sap-container { max-width: 600px; }
+        .sap-container { max-width: 620px; }
         .password-container { position: relative; display: flex; align-items: center; }
         .password-container input { padding-right: 40px; width: 100%; }
-        .password-toggle { 
-            position: absolute; 
-            right: 10px; 
-            cursor: pointer; 
-            color: #666; 
-            font-size: 1.2rem;
-            user-select: none;
+        .password-toggle { position: absolute; right: 10px; cursor: pointer; color: #666; font-size: 1.2rem; user-select: none; }
+
+        /* Type selector B2B / B2C */
+        .type-selector { display: flex; gap: 12px; margin-bottom: 1.5rem; }
+        .type-card {
+            flex: 1; border: 2px solid var(--sapBorderColor); border-radius: 8px;
+            padding: 16px 12px; text-align: center; cursor: pointer;
+            transition: all 0.2s; background: #fafafa;
         }
+        .type-card:hover { border-color: var(--sapBrandColor); background: #f0f7ff; }
+        .type-card.selected { border-color: var(--sapBrandColor); background: #e8f3fc; }
+        .type-card .type-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+        .type-card .type-title { font-weight: bold; color: var(--sapTextColor); }
+        .type-card .type-desc { font-size: 0.78rem; color: #666; margin-top: 4px; }
+        .type-card input[type="radio"] { display: none; }
+
+        .b2b-only { transition: all 0.3s; }
+        .b2b-only.hidden { display: none; }
+
+        .section-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 12px;
+            font-size: 0.75rem; font-weight: bold; margin-bottom: 12px;
+        }
+        .badge-b2b { background: #e8f3fc; color: #0a6ed1; }
+        .badge-b2c { background: #f0faf0; color: #107e3e; }
+        .badge-all { background: #f4f4f4; color: #555; }
     </style>
 </head>
 <body>
     <div class="sap-container">
         <div class="sap-logo">
-            <img src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" alt="SAP Logo" style="width: 80px; margin-bottom: 10px;">
+            <img src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" alt="SAP Logo" style="width:70px;margin-bottom:8px;">
             <br>SAP BTP
         </div>
         <div class="sap-title">Demande de Partenariat</div>
@@ -36,12 +54,15 @@
         <div id="registerMessage" class="sap-message"></div>
 
         <form id="registerForm">
-            <!-- PHASE 1: Infos Société -->
+            <!-- ════════════════════════════════════════════════════════
+                 PHASE 1 : Type + Infos Société / Individu
+            ═══════════════════════════════════════════════════════════ -->
             <div class="wizard-step active" id="step1">
-                <h3 style="margin-top:0;">Informations de l'entreprise</h3>
+                <h3 style="margin-top:0;">Informations de l'entité</h3>
+
                 <div class="sap-form-group">
-                    <label class="sap-label" for="companyName">Nom de la société *</label>
-                    <input type="text" id="companyName" class="sap-input" placeholder="Ex: TechStart DZ" required>
+                    <label class="sap-label" for="companyName">Nom de la société / Nom complet *</label>
+                    <input type="text" id="companyName" class="sap-input" placeholder="Ex: TechStart DZ SARL ou Yasmine Boudiaf" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="secteurActivite">Secteur d'activité *</label>
@@ -51,53 +72,143 @@
                         <option value="Informatique / IT">
                         <option value="Logistique / Transport">
                         <option value="Commerce de gros">
-                        <option value="Industrie">
+                        <option value="Industrie / Fabrication">
+                        <option value="Agriculture">
                         <option value="Services">
+                        <option value="Santé / Pharmacie">
+                        <option value="Éducation / Formation">
+                        <option value="Energie / Hydrocarbures">
                     </datalist>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="rib">RIB (20 chiffres) *</label>
-                    <input type="text" id="rib" class="sap-input" maxlength="20" minlength="20" pattern="\d{20}" title="Veuillez saisir exactement 20 chiffres" placeholder="Ex: 00100200300400500600" required>
+                    <input type="text" id="rib" class="sap-input" maxlength="20" minlength="20" pattern="\d{20}" placeholder="Ex: 00100200300400500600" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="nif">NIF (15 chiffres) *</label>
-                    <input type="text" id="nif" class="sap-input" maxlength="15" minlength="15" pattern="\d{15}" title="Veuillez saisir exactement 15 chiffres" placeholder="Ex: 123456789012345" required>
+                    <input type="text" id="nif" class="sap-input" maxlength="15" minlength="15" pattern="\d{15}" placeholder="Ex: 123456789012345" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="ai">Article d'Imposition AI (11 chiffres) *</label>
-                    <input type="text" id="ai" class="sap-input" maxlength="11" minlength="11" pattern="\d{11}" title="Veuillez saisir exactement 11 chiffres" placeholder="Ex: 12345678901" required>
+                    <input type="text" id="ai" class="sap-input" maxlength="11" minlength="11" pattern="\d{11}" placeholder="Ex: 12345678901" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="rc">Registre de Commerce (RC) *</label>
-                    <input type="text" id="rc" class="sap-input" pattern="^\d{2}[/]?([A-C])[-]?\d{6,7}$" title="Format attendu: AA/N-XXXXXXX ou AANXXXXXXX (AA: année, N: A/B/C, XXXXXXX: 6 à 7 chiffres)" placeholder="Ex: 24/B-1234567 ou 24B1234567" required>
+                    <input type="text" id="rc" class="sap-input" pattern="^\d{2}[/]?([A-C])[-]?\d{6,7}$" placeholder="Ex: 24/B-1234567 ou 24B1234567" required>
                 </div>
+
+                <!-- Wilaya — pour tous -->
+                <span class="section-badge badge-all">📍 Localisation</span>
+                <div class="sap-form-group">
+                    <label class="sap-label" for="wilaya">Wilaya *</label>
+                    <select id="wilaya" class="sap-input" required>
+                        <option value="">-- Sélectionnez votre wilaya --</option>
+                        <option value="Adrar" data-code="1">01 - Adrar</option>
+                        <option value="Chlef" data-code="2">02 - Chlef</option>
+                        <option value="Laghouat" data-code="3">03 - Laghouat</option>
+                        <option value="Oum El Bouaghi" data-code="4">04 - Oum El Bouaghi</option>
+                        <option value="Batna" data-code="5">05 - Batna</option>
+                        <option value="Béjaïa" data-code="6">06 - Béjaïa</option>
+                        <option value="Biskra" data-code="7">07 - Biskra</option>
+                        <option value="Béchar" data-code="8">08 - Béchar</option>
+                        <option value="Blida" data-code="9">09 - Blida</option>
+                        <option value="Bouira" data-code="10">10 - Bouira</option>
+                        <option value="Tamanrasset" data-code="11">11 - Tamanrasset</option>
+                        <option value="Tébessa" data-code="12">12 - Tébessa</option>
+                        <option value="Tlemcen" data-code="13">13 - Tlemcen</option>
+                        <option value="Tiaret" data-code="14">14 - Tiaret</option>
+                        <option value="Tizi Ouzou" data-code="15">15 - Tizi Ouzou</option>
+                        <option value="Alger" data-code="16">16 - Alger</option>
+                        <option value="Djelfa" data-code="17">17 - Djelfa</option>
+                        <option value="Jijel" data-code="18">18 - Jijel</option>
+                        <option value="Sétif" data-code="19">19 - Sétif</option>
+                        <option value="Saïda" data-code="20">20 - Saïda</option>
+                        <option value="Skikda" data-code="21">21 - Skikda</option>
+                        <option value="Sidi Bel Abbès" data-code="22">22 - Sidi Bel Abbès</option>
+                        <option value="Annaba" data-code="23">23 - Annaba</option>
+                        <option value="Guelma" data-code="24">24 - Guelma</option>
+                        <option value="Constantine" data-code="25">25 - Constantine</option>
+                        <option value="Médéa" data-code="26">26 - Médéa</option>
+                        <option value="Mostaganem" data-code="27">27 - Mostaganem</option>
+                        <option value="M'Sila" data-code="28">28 - M'Sila</option>
+                        <option value="Mascara" data-code="29">29 - Mascara</option>
+                        <option value="Ouargla" data-code="30">30 - Ouargla</option>
+                        <option value="Oran" data-code="31">31 - Oran</option>
+                        <option value="El Bayadh" data-code="32">32 - El Bayadh</option>
+                        <option value="Illizi" data-code="33">33 - Illizi</option>
+                        <option value="Bordj Bou Arréridj" data-code="34">34 - Bordj Bou Arréridj</option>
+                        <option value="Boumerdès" data-code="35">35 - Boumerdès</option>
+                        <option value="El Tarf" data-code="36">36 - El Tarf</option>
+                        <option value="Tindouf" data-code="37">37 - Tindouf</option>
+                        <option value="Tissemsilt" data-code="38">38 - Tissemsilt</option>
+                        <option value="El Oued" data-code="39">39 - El Oued</option>
+                        <option value="Khenchela" data-code="40">40 - Khenchela</option>
+                        <option value="Souk Ahras" data-code="41">41 - Souk Ahras</option>
+                        <option value="Tipaza" data-code="42">42 - Tipaza</option>
+                        <option value="Mila" data-code="43">43 - Mila</option>
+                        <option value="Aïn Defla" data-code="44">44 - Aïn Defla</option>
+                        <option value="Naâma" data-code="45">45 - Naâma</option>
+                        <option value="Aïn Témouchent" data-code="46">46 - Aïn Témouchent</option>
+                        <option value="Ghardaïa" data-code="47">47 - Ghardaïa</option>
+                        <option value="Relizane" data-code="48">48 - Relizane</option>
+                        <option value="Timimoun" data-code="49">49 - Timimoun</option>
+                        <option value="Bordj Badji Mokhtar" data-code="50">50 - Bordj Badji Mokhtar</option>
+                        <option value="Ouled Djellal" data-code="51">51 - Ouled Djellal</option>
+                        <option value="Béni Abbès" data-code="52">52 - Béni Abbès</option>
+                        <option value="In Salah" data-code="53">53 - In Salah</option>
+                        <option value="In Guezzam" data-code="54">54 - In Guezzam</option>
+                        <option value="Touggourt" data-code="55">55 - Touggourt</option>
+                        <option value="Djanet" data-code="56">56 - Djanet</option>
+                        <option value="El M'Ghair" data-code="57">57 - El M'Ghair</option>
+                        <option value="El Menia" data-code="58">58 - El Menia</option>
+                    </select>
+                </div>
+
                 <div class="wizard-nav">
                     <button type="button" class="sap-btn sap-btn-secondary" onclick="window.location.href='index.html'">Annuler</button>
-                    <button type="button" class="sap-btn" onclick="nextStep(2)">Suivant</button>
+                    <button type="button" class="sap-btn" onclick="nextStep(2)">Suivant →</button>
                 </div>
             </div>
 
-            <!-- PHASE 2: Identifiants -->
+            <!-- ════════════════════════════════════════════════════════
+                 PHASE 2 : Identifiants & Responsable
+            ═══════════════════════════════════════════════════════════ -->
             <div class="wizard-step" id="step2">
-                <h3 style="margin-top:0;">Identifiants & Responsable</h3>
+                <h3 style="margin-top:0;">Rôle &amp; Identifiants</h3>
                 <div class="sap-form-group">
-                    <label class="sap-label" for="bpRole">Vous êtes un... *</label>
-                    <select id="bpRole" class="sap-input" required>
-                        <option value="Client">Client (Acheteur de nos produits)</option>
-                        <option value="Supplier">Fournisseur (Vendeur de vos produits)</option>
-                    </select>
+                    <label class="sap-label">Vous êtes un... *</label>
+                    <div class="type-selector" style="flex-wrap: wrap;">
+                        <label class="type-card selected" id="card-supplier" onclick="selectRole('Supplier', 'B2B')">
+                            <input type="radio" name="roleChoice" value="Supplier_B2B" checked>
+                            <span class="type-icon">🏭</span>
+                            <div class="type-title">Fournisseur</div>
+                            <div class="type-desc">Vendeur</div>
+                        </label>
+                        <label class="type-card" id="card-client-b2b" onclick="selectRole('Client', 'B2B')">
+                            <input type="radio" name="roleChoice" value="Client_B2B">
+                            <span class="type-icon">🏢</span>
+                            <div class="type-title">Client B2B</div>
+                            <div class="type-desc">Effectif > 5</div>
+                        </label>
+                        <label class="type-card" id="card-client-b2c" onclick="selectRole('Client', 'B2C')">
+                            <input type="radio" name="roleChoice" value="Client_B2C">
+                            <span class="type-icon">👤</span>
+                            <div class="type-title">Client B2C</div>
+                            <div class="type-desc">Effectif < 5</div>
+                        </label>
+                    </div>
                 </div>
-                <div class="sap-form-group">
+                <div class="sap-form-group" id="fullname-field">
                     <label class="sap-label" for="fullNameResponsible">Nom complet du responsable *</label>
                     <input type="text" id="fullNameResponsible" class="sap-input" placeholder="Ex: Mohamed Hemiche" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="phoneNumber">Numéro de téléphone *</label>
-                    <input type="tel" id="phoneNumber" class="sap-input" pattern="^0\d{9}$" title="Veuillez saisir un numéro à 10 chiffres commençant par 0 (ex: 0550123456)" placeholder="Ex: 0550123456" required>
+                    <input type="tel" id="phoneNumber" class="sap-input" pattern="^0\d{9}$" title="10 chiffres commençant par 0" placeholder="Ex: 0550123456" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="email">Adresse E-mail *</label>
-                    <input type="email" id="email" class="sap-input" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Veuillez entrer une adresse e-mail valide (ex: contact@entreprise.dz)" placeholder="Ex: contact@entreprise.dz" required>
+                    <input type="email" id="email" class="sap-input" placeholder="Ex: contact@entreprise.dz" required>
                 </div>
                 <div class="sap-form-group">
                     <label class="sap-label" for="password">Mot de passe *</label>
@@ -114,46 +225,58 @@
                     </div>
                 </div>
                 <div class="wizard-nav">
-                    <button type="button" class="sap-btn sap-btn-secondary" onclick="prevStep(1)">Précédent</button>
-                    <button type="button" class="sap-btn" onclick="nextStep(3)">Suivant</button>
+                    <button type="button" class="sap-btn sap-btn-secondary" onclick="prevStep(1)">← Précédent</button>
+                    <button type="button" class="sap-btn" onclick="nextStep(3)">Suivant →</button>
                 </div>
             </div>
 
-            <!-- PHASE 3: Documents -->
+            <!-- ════════════════════════════════════════════════════════
+                 PHASE 3 : Documents (B2B seulement)
+            ═══════════════════════════════════════════════════════════ -->
             <div class="wizard-step" id="step3">
-                <h3 style="margin-top:0;">Justificatifs (Format PDF uniquement)</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;">
-                    Veuillez télécharger vos documents officiels. Ces fichiers seront vérifiés par l'administrateur.
-                </p>
-
-                <div class="sap-form-group file-upload-section">
-                    <label class="sap-label"><span class="icon">📜</span> Registre de Commerce (RC) *</label>
-                    <input type="file" id="fileRC" class="sap-input" accept=".pdf" required>
+                <div>
+                    <h3 style="margin-top:0;">Justificatifs (PDF uniquement)</h3>
+                    <p style="font-size:0.9rem;color:#666;margin-bottom:1.5rem;">
+                        Vos documents seront vérifiés par l'administrateur avant approbation.
+                    </p>
+                    <div class="sap-form-group">
+                        <label class="sap-label">📜 Registre de Commerce (RC) *</label>
+                        <input type="file" id="fileRC" class="sap-input" accept=".pdf" required>
+                    </div>
+                    <div class="sap-form-group">
+                        <label class="sap-label">🏦 Relevé d'Identité Bancaire (RIB) *</label>
+                        <input type="file" id="fileRIB" class="sap-input" accept=".pdf" required>
+                    </div>
+                    <div class="sap-form-group">
+                        <label class="sap-label">📄 Numéro d'Identification Fiscale (NIF) *</label>
+                        <input type="file" id="fileNIF" class="sap-input" accept=".pdf" required>
+                    </div>
+                    <div class="sap-form-group">
+                        <label class="sap-label">⚖️ Article d'Imposition (AI) *</label>
+                        <input type="file" id="fileAI" class="sap-input" accept=".pdf" required>
+                    </div>
                 </div>
-
-                <div class="sap-form-group file-upload-section">
-                    <label class="sap-label"><span class="icon">🏦</span> Relevé d'Identité Bancaire (RIB) *</label>
-                    <input type="file" id="fileRIB" class="sap-input" accept=".pdf" required>
-                </div>
-
-                <div class="sap-form-group file-upload-section">
-                    <label class="sap-label"><span class="icon">📄</span> Numéro d'Identification Fiscale (NIF) *</label>
-                    <input type="file" id="fileNIF" class="sap-input" accept=".pdf" required>
-                </div>
-
-                <div class="sap-form-group file-upload-section">
-                    <label class="sap-label"><span class="icon">⚖️</span> Article d'Imposition (AI) *</label>
-                    <input type="file" id="fileAI" class="sap-input" accept=".pdf" required>
-                </div>
-
                 <div class="wizard-nav">
-                    <button type="button" class="sap-btn sap-btn-secondary" onclick="prevStep(2)">Précédent</button>
-                    <button type="submit" class="sap-btn">Soumettre la demande</button>
+                    <button type="button" class="sap-btn sap-btn-secondary" onclick="prevStep(2)">← Précédent</button>
+                    <button type="submit" class="sap-btn">✅ Soumettre la demande</button>
                 </div>
             </div>
         </form>
     </div>
 
+    <script>
+        // ── Gestion de la sélection du rôle ─────────────────────────────────────────
+        window.selectRole = function(role, type) {
+            document.querySelectorAll('.type-card').forEach(el => el.classList.remove('selected'));
+            if (role === 'Supplier') {
+                document.getElementById('card-supplier').classList.add('selected');
+            } else if (role === 'Client' && type === 'B2B') {
+                document.getElementById('card-client-b2b').classList.add('selected');
+            } else if (role === 'Client' && type === 'B2C') {
+                document.getElementById('card-client-b2c').classList.add('selected');
+            }
+        };
+    </script>
     <script src="js/app.js"></script>
 </body>
 </html>
